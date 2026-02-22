@@ -1,0 +1,37 @@
+field_name,data type,required,nullable,default,definition,example_value,source_of_truth,notes
+dish_id,uuid,Yes,No,gen_random_uuid(),Primary key for the dish record. Unique identifier used across the system.,550e8400-e29b-41d4-a716-446655440000,database,Can be null for ingest; assigned by DB.
+dish_name,string,Yes,No,(none),Primary user-facing dish name in the app’s primary language.,Spaghetti Carbonara,curated/manual,
+dish_name_local,string,No,Yes,null,Local/native-language dish name (if applicable).,Cacio e Pepe,curated/manual,Optional.
+canonical_slug,string,Yes,No,(none),URL-safe canonical slug used for routes and deduping.,spaghetti-carbonara,system-derived,
+primary_cuisine,enum,Yes,No,unknown,Primary cuisine classification used for filtering/browse.,italian,curated/manual,Controlled vocab.
+course_type,enum,Yes,No,(none),Menu course classification (course axis).,main,curated/manual,Controlled vocab.
+dish_category,enum,Yes,No,(none),Dish format/type classification (orthogonal to course_type).,pasta_dish,curated/manual,Controlled vocab.
+meal_timing,array(enum),Yes,No,[],Dayparts when the dish is commonly consumed.,"['dinner','late_night']",curated/manual,Array/list.
+description_short,string,Yes,No,(none),Short UI description shown in previews/cards.,Silky pasta in a creamy egg-and-cheese sauce with crisp pancetta.,curated/manual,
+taste_active_sweet,numeric,Yes,No,(none),Sweetness intensity score for the active taste profile.,0.12,pipeline-derived,0–1 float.
+taste_active_salty,numeric,Yes,No,(none),Saltiness intensity score for the active taste profile.,0.74,pipeline-derived,0–1 float.
+taste_active_sour,numeric,Yes,No,(none),Sourness intensity score for the active taste profile.,0.18,pipeline-derived,0–1 float.
+taste_active_spicy,numeric,Yes,No,(none),Spiciness intensity score for the active taste profile.,0.22,pipeline-derived,0–1 float.
+taste_active_umami,numeric,Yes,No,(none),Umami intensity score for the active taste profile.,0.81,pipeline-derived,0–1 float.
+taste_active_bitter,numeric,Yes,No,(none),Bitterness intensity score for the active taste profile.,0.05,pipeline-derived,0–1 float.
+taste_active_overall_confidence,numeric,Yes,No,0,Confidence that the active taste profile scores are accurate.,0.86,pipeline-derived,0–1 float.
+allergen_confidence,numeric,Yes,No,0,Confidence that allergen flags for this dish are accurate.,0.93,pipeline-derived,0–1 float.
+allergen_contains_milk,boolean,Yes,No,FALSE,Dish contains milk/dairy ingredients (intentional inclusion).,true,curated/pipeline,Boolean.
+allergen_contains_egg,boolean,Yes,No,FALSE,Dish contains egg ingredients (intentional inclusion).,true,curated/pipeline,Boolean.
+allergen_contains_wheat,boolean,Yes,No,FALSE,Dish contains wheat ingredients (intentional inclusion).,false,curated/pipeline,Boolean.
+allergen_contains_soy,boolean,Yes,No,FALSE,Dish contains soy ingredients (intentional inclusion).,false,curated/pipeline,Boolean.
+allergen_contains_peanut,boolean,Yes,No,FALSE,Dish contains peanut ingredients (intentional inclusion).,false,curated/pipeline,Boolean.
+allergen_contains_tree_nut,boolean,Yes,No,FALSE,Dish contains tree nut ingredients (intentional inclusion).,false,curated/pipeline,Boolean.
+allergen_contains_fish,boolean,Yes,No,FALSE,Dish contains fish ingredients (intentional inclusion).,false,curated/pipeline,Boolean.
+allergen_contains_shellfish,boolean,Yes,No,FALSE,Dish contains shellfish ingredients (intentional inclusion).,false,curated/pipeline,Boolean.
+allergen_contains_sesame,boolean,Yes,No,FALSE,Dish contains sesame ingredients (intentional inclusion).,false,curated/pipeline,Boolean.
+allergen_contains_gluten,boolean,Yes,No,FALSE,Dish contains gluten-containing ingredients (intentional inclusion).,false,curated/pipeline,Boolean (can be derived from wheat/barley/rye).
+diet_vegan,boolean,Yes,No,FALSE,Dish is suitable for a vegan diet as served.,false,curated/manual,Boolean.
+diet_vegetarian,boolean,Yes,No,FALSE,Dish is suitable for a vegetarian diet as served.,false,curated/manual,Boolean.
+diet_gluten_free,boolean,Yes,No,FALSE,Dish is suitable for a gluten-free diet as served (MVP).,false,curated/manual,Boolean.
+diet_dairy_free,boolean,Yes,No,FALSE,Dish is suitable for a dairy-free diet as served.,false,curated/manual,Boolean.
+is_pork_present,boolean,Yes,No,FALSE,Dish contains pork as an ingredient (as served).,true,curated/manual or pipeline,Boolean.
+is_alcohol_present,boolean,Yes,No,FALSE,Dish contains alcohol as an ingredient (as served).,false,curated/manual or pipeline,Boolean.
+qa_status,enum,Yes,No,(none),QA workflow state for the dish record.,approved,ops/manual,Controlled vocab.
+requires_manual_review,boolean,Yes,No,FALSE,Manual review gate used to route records into QA queue.,false,pipeline-derived or ops/manual,Boolean.
+data_source,enum,Yes,No,(none),Provenance label for how the record was created/populated.,ai_pipeline_v1,ops/manual or pipeline,Controlled vocab / free-text label.

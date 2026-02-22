@@ -7,7 +7,7 @@ import pandas as pd
 
 
 def read_vocab()->dict[str,set[str]]:
-   df = pd.read_csv('Controlled_Vocab.csv')
+   df = pd.read_csv('data/Controlled_Vocab.csv')
 
    vocab = defaultdict(set)
 
@@ -17,7 +17,7 @@ def read_vocab()->dict[str,set[str]]:
    return vocab
 
 def get_required_fields()->list[str]:
-    data_dict_df = pd.read_csv('Data_Dictionary.csv')
+    data_dict_df = pd.read_csv('data/Data_Dictionary.csv')
 
     return data_dict_df[data_dict_df['required'].str.lower() == 'yes']['column_name'].tolist()
 
@@ -89,7 +89,7 @@ def validate_dish(dish: dict[str, Any], vocab: dict[str, set], required_fields:l
 
     return errors
 
-dish_df = pd.read_csv('Dish_Attributes_Preview.csv', skiprows=1)
+dish_df = pd.read_csv('data/Dish_Attributes_Preview.csv', skiprows=1)
 
 one_dish_dict = dish_df.iloc[0].to_dict()
 
