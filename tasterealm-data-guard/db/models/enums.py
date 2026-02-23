@@ -1,6 +1,8 @@
 from enum import Enum as PyEnum
+from sqlalchemy import Enum
 
 
+# Staging
 class BatchStatus(PyEnum):
     pending = "pending"
     validating = "validating"
@@ -8,7 +10,7 @@ class BatchStatus(PyEnum):
     failed = "failed"
     promoted = "promoted"
 
-
+# dishes
 class PrimaryCuisine(PyEnum):
     unknown = "unknown"
     american = "american"
@@ -28,6 +30,7 @@ class PrimaryCuisine(PyEnum):
     vietnamese = "vietnamese"
 
 
+# dishes
 class CourseType(PyEnum):
     appetizer = "appetizer"
     main = "main"
@@ -35,6 +38,7 @@ class CourseType(PyEnum):
     dessert = "dessert"
 
 
+# dishes
 class DishCategory(PyEnum):
     appetizer_plate = "appetizer_plate"
     baked_dessert = "baked_dessert"
@@ -89,6 +93,7 @@ class DishCategory(PyEnum):
     wrap = "wrap"
 
 
+# dishes
 class MealTiming(PyEnum):
     breakfast = "breakfast"
     brunch = "brunch"
@@ -110,3 +115,24 @@ class DataSource(PyEnum):
     ai_pipeline_v1 = "ai_pipeline_v1"
     import_partner = "import_partner"
     unknown = "unknown"
+    
+class Severity(PyEnum):
+    error = "error"
+    warning = "warning"
+    
+class OverallStatus(PyEnum):
+    pass_ = "pass"  # 'pass' is a reserved word in Python so use pass_
+    fail = "fail"
+
+# SQLAlchemy Enum type objects bound to the Python enum classes above.
+# Use these in mapped_column(...) so enum DDL/type naming is centralized and
+# reusable across models.
+batch_status_enum = Enum(BatchStatus, name="batch_status_enum")
+primary_cuisine_enum = Enum(PrimaryCuisine, name="primary_cuisine_enum")
+course_type_enum = Enum(CourseType, name="course_type_enum")
+dish_category_enum = Enum(DishCategory, name="dish_category_enum")
+meal_timing_enum = Enum(MealTiming, name="meal_timing_enum")
+qa_status_enum = Enum(QAStatus, name="qa_status_enum")
+data_source_enum = Enum(DataSource, name="data_source_enum")
+severity_enum = Enum(Severity, name="severity_enum")
+overall_status_enum = Enum(OverallStatus, name="overall_status_enum")

@@ -1,6 +1,6 @@
 from db.models.base import Base
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Integer, DateTime, UUID, Boolean, ForeignKey, Numeric
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy import text
@@ -11,19 +11,20 @@ class Batches(Base):
     __tablename__ = "batches"
     __table_args__ = {"schema": "staging"}
     
-    batch_id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True, server_default=text("gen_random_uuid()"))
+    batch_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, server_default=text("gen_random_uuid()"))
     batch_name: Mapped[str] = mapped_column(String)
     imported_at: Mapped[datetime] = mapped_column(DateTime, server_default=text("now()"))
     imported_by: Mapped[str] = mapped_column(String)
     batch_status: Mapped[str] = mapped_column(String, default="pending")
     total_records: Mapped[int] = mapped_column(Integer)
+    runs: Mapped[list["ValidationRuns"]] = relationship(back_populates="batch")
 
 
 class StagedDish(Base):
     __tablename__ = "staged_dishes"
     __table_args__ = {"schema": "staging"}
 
-    dish_id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True, server_default=text("gen_random_uuid()"))
+    dish_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, server_default=text("gen_random_uuid()"))
     dish_name: Mapped[str | None] = mapped_column(String, nullable=True)
     dish_name_local: Mapped[str | None] = mapped_column(String, nullable=True)
     canonical_slug: Mapped[str | None] = mapped_column(String, nullable=True)
@@ -60,5 +61,5 @@ class StagedDish(Base):
     qa_status: Mapped[str | None] = mapped_column(String, nullable=True)
     requires_manual_review: Mapped[bool | None] = mapped_column(Boolean, nullable=True, default=False)
     data_source: Mapped[str | None] = mapped_column(String, nullable=True)
-    batch_id: Mapped[uuid.UUID] = mapped_column(UUID, ForeignKey("staging.batches.batch_id"), nullable=False)
+    batch_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("staging.batches.batch_id"), nullable=False)
     
